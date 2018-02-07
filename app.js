@@ -1,4 +1,4 @@
-var app = angular.module('postNews', []);
+var app = angular.module('postNews', ['ui.router']);
 
 app.factory('posts', [function(){
     var o = {
@@ -30,7 +30,11 @@ app.controller('MainCtrl', [
             $scope.posts.push({
                 title: $scope.title,
                 link: $scope.link,
-                upvotes: 0
+                upvotes: 0,
+                comments: [
+                    {author: 'John', body: 'Cool post', upvotes: 0},
+                    {author: 'Dave', bodt: 'Random post', upvotes: 0}
+                ]
             });
             $scope.title = '';
             $scope.link = '';
@@ -40,4 +44,55 @@ app.controller('MainCtrl', [
             post.upvotes++;
         };
     }
-])
+]);
+
+app.config([
+    '$stateProvider',
+    '$urlRouterProvider',
+    function($stateProvider, $urlRouterProvider){
+        $stateProvider
+        .state('home', {
+            url: '/home',
+            templateUrl: '/home.html',
+            controller: 'MainCtrl'
+        });
+
+        $stateProvider
+        .state('posts', {
+            url: '/posts/{id}',
+            templateUrl: '/posts.html',
+            controller: 'PostsCtrl'
+        });
+
+        $urlRouterProvider.otherwise('home');
+    }
+]);
+
+app.controller('PostsCtrl', [
+    '$scope',
+    '$stateParams',
+    'posts',
+    function($scope, $stateParams, posts){
+        $scope.post = posts.posts[$stateParams.id];
+
+        /*$scope.posts.push({
+            title: $scope.title,
+            link: $scope.link,
+            upvotes: 0,
+            comments: [
+                {author: 'John', body: 'Cool post', upvotes: 0},
+                {author: 'Dave', bodt: 'Random post', upvotes: 0}
+            ]
+        });*/
+
+        $scope.addComment = function(){
+            if($scope.body === '') {return;}
+            $scope.post.comments.push({
+                body: $scope.body,
+                aither: 'user',
+                upvotes: 0
+            });
+            $scope.body = '';
+        };
+    }
+]);
