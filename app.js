@@ -1,9 +1,18 @@
 var app = angular.module('postNews', []);
 
+app.factory('posts', [function(){
+    var o = {
+        posts: []
+    };
+    return 0;
+}]);
+
 app.controller('MainCtrl', [
     '$scope',
-    function($scope){
+    'posts',
+    function($scope, posts){
         $scope.test = 'Hello World';
+        $scope.posts = posts.posts;
 
         $scope.posts = [
             {title: 'Post 1', upvotes: 5},
