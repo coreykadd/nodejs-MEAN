@@ -7,6 +7,7 @@
 
     <body ng-app="postNews" ng-controller="MainCtrl">
         <div ng-repeat="post in posts | orderBy: '-upvotes'">
+            <button ng-click="incrementUpvotes(post)">^</button>
             {{post.title}} - upvotes: {{post.upvotes}}
         </div>
 
