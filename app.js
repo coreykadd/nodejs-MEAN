@@ -18,8 +18,13 @@ app.controller('MainCtrl', [
                 alert("Please enter title for post");
                 return;
             }
-            $scope.posts.push({title: $scope.title, upvotes: 0});
+            $scope.posts.push({
+                title: $scope.title,
+                link: $scope.link,
+                upvotes: 0
+            });
             $scope.title = '';
+            $scope.link = '';
         };
 
         $scope.incrementUpvotes = function(post){
